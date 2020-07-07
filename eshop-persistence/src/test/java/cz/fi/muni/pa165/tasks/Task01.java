@@ -13,7 +13,7 @@ import cz.fi.muni.pa165.PersistenceSampleApplicationContext;
 import cz.fi.muni.pa165.entity.Category;
 
 
-	
+@ContextConfiguration
 public class Task01  {
 
 	
@@ -30,6 +30,7 @@ public class Task01  {
 		em.getTransaction().commit();
 		em.close();
 		//TODO under this line: create a second entity manager in categoryTest, use find method to find the category and assert its name.
+
 	}
 
 }
