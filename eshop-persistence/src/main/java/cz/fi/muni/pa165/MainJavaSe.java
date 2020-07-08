@@ -2,8 +2,9 @@ package cz.fi.muni.pa165;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -27,7 +28,7 @@ public class MainJavaSe {
 		emf = Persistence.createEntityManagerFactory("default");
 		try {
 			// BEGIN YOUR CODE
-			task04();
+			task06();
 			// END YOUR CODE
 		} finally {
 			emf.close();
@@ -41,6 +42,20 @@ public class MainJavaSe {
 		// You must first obtain the Entity manager
 		// Then you have to start transaction using getTransaction().begin()
 		// Then use persist() to persist both of the categories and finally commit the transaction
+		EntityManager entityManager = emf.createEntityManager();
+		entityManager.getTransaction().begin();
+
+		Category electronicsCategory = new Category();
+		electronicsCategory.setName("Electronics");
+
+		Category musicalCategory = new Category();
+		musicalCategory.setName("Musical");
+
+		entityManager.persist(electronicsCategory);
+		entityManager.persist(musicalCategory);
+
+		entityManager.getTransaction().commit();
+		entityManager.close();
 
 		// The code below is just testing code. Do not modify it
 		EntityManager em = emf.createEntityManager();
@@ -73,6 +88,12 @@ public class MainJavaSe {
 		// TODO under this line. create new entity manager and start new transaction. Merge
 		// the detached category
 		// into the context and change the name to "Electro"
+		EntityManager entityManager = emf.createEntityManager();
+		entityManager.getTransaction().begin();
+		category.setName("Electro");
+		entityManager.merge(category);
+		entityManager.getTransaction().commit();
+		entityManager.close();
 
 		// The code below is just testing code. Do not modify it
 		EntityManager checkingEm = emf.createEntityManager();
@@ -99,12 +120,28 @@ public class MainJavaSe {
 		//
 		// Additional task: Change the underlying table of Product entity to be ESHOP_PRODUCTS. After you do this, check this by inspecting console output (the CREATE TABLE statement)
 		//
+		EntityManager entityManager = emf.createEntityManager();
+		entityManager.getTransaction().begin();
 
-/** TODO uncoment all the code below after you finish the TODO's
+		Product guitar = new Product();
+		guitar.setName("Guitar");
+		guitar.setColor(Color.BLACK);
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(2011, Calendar.JANUARY, 20);
+		guitar.setAddedDate(calendar.getTime()
+				.toInstant()
+				.atZone(ZoneId.systemDefault())
+				.toLocalDate());
+
+		entityManager.persist(guitar);
+		entityManager.getTransaction().commit();
+		entityManager.close();
+
 
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
-		Product p = em.createQuery("select p from Product p", Product.class)
+		Product p = em.createQuery("select p from ESHOP_PRODUCTS p", Product.class)
 				.getSingleResult();
 		em.getTransaction().commit();
 		em.close();
@@ -135,7 +172,6 @@ public class MainJavaSe {
 		em.close();
 
 		System.out.println("Task6 ok!");
-**/
 	}
 	
 	private static void task07() {
@@ -147,7 +183,7 @@ public class MainJavaSe {
 		//TODO after you implement equals nad hashCode, you can uncomment the code below. It will try
 		// to check whether you are doing everything correctly. 
 	
-/* TODO uncomment the following (it should work if you were successfull with task08)
+// TODO uncomment the following (it should work if you were successfull with task08)
 
 
 		class MockProduct extends Product {
@@ -185,7 +221,7 @@ public class MainJavaSe {
 		if (mp.getNameCalled){
 			System.out.println("CORRECT");
 		} else System.out.println("INCORRECT!");
-		 */
+
 	
 	}
 
