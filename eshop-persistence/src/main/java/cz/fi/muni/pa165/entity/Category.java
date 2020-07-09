@@ -23,21 +23,25 @@ public class Category {
 	@NotNull
 	@Column(nullable=false,unique=true)
 	private String name;
-	
+
+	@ManyToMany
+	private Set<Product> products;
 
 	//TODO after you are done with task02 you can uncomment this methods
-//	public void addProduct(Product product) {
-//		this.products.add(product);
-//	}
-//
-//	public Set<Product> getProducts() {
-//		return Collections.unmodifiableSet(products);
-//	}
+	public void addProduct(Product product) {
+		this.products.add(product);
+	}
+
+	public Set<Product> getProducts() {
+		return Collections.unmodifiableSet(products);
+	}
 
 	public Category(Long categoryId) {
-		this.id = categoryId; 
+		this();
+		this.id = categoryId;
 	}
 	public Category() {
+		this.products = new HashSet<>();
 	}
 
 	public String getName() {
